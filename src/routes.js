@@ -8,5 +8,6 @@ routes.get('/', (request, response) => {
 });
 
 routes.post('/tasks', TaskController.store);
+routes.get('/tasks', TaskController.index);
 
 module.exports = routes;

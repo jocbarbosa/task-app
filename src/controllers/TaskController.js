@@ -8,5 +8,11 @@ module.exports = {
         });
 
         return response.json(task);
+    },
+
+    async index(request, response) {
+        const tasks = await Task.find();
+
+        return response.json(tasks);
     }
 }
