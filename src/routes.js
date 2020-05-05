@@ -9,5 +9,7 @@ routes.get('/', (request, response) => {
 
 routes.post('/tasks', TaskController.store);
 routes.get('/tasks', TaskController.index);
+routes.put('/tasks/:id', TaskController.update);
+routes.delete('/tasks/:id', TaskController.destroy);
 
 module.exports = routes;
