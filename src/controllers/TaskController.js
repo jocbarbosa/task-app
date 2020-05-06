@@ -8,9 +8,9 @@ module.exports = {
     },
 
     async store(request, response) {
-        const { name, description } = request.body;
+        const { name, description, priority, done } = request.body;
         const task = await Task.create({
-            name, description
+            name, description, priority, done
         });
 
         return response.json(task);
