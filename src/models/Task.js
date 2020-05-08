@@ -19,11 +19,13 @@ const TaskSchema = new mongoose.Schema({
     },
     priority: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false,
     },
     done: {
         type: Boolean,
-        required: true
+        required: true,
+        default: false
     },
 });
 
