@@ -11,6 +11,7 @@ routes.post('/tasks', TaskController.store);
 routes.get('/tasks', TaskController.index);
 routes.put('/tasks/:id', TaskController.update);
 routes.delete('/tasks/:id', TaskController.destroy);
+routes.get('/tasks/pending', TaskController.pendingTasks);
 routes.get('/tasks/:id', TaskController.show);
 
 module.exports = routes;
