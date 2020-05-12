@@ -3,9 +3,9 @@ const Task = require('../models/Task');
 module.exports = {
     index(request, response) {
         Task.find().then((tasks) => {
-            return response.json(tasks);
+            response.json(tasks);
         }).catch((error) => {
-            return response.status(400).send();
+            response.status(400).send();
         })
     },
 
@@ -13,12 +13,12 @@ module.exports = {
         Task.findById(request.params.id)
             .then((task) => {
                 if (!task) {
-                    return response.status(204).send();
+                    response.status(204).send();
                 }
-                return response.json(task);
+                response.json(task);
             })
             .catch(error => {
-                return response.status(500).json(error);
+                response.status(500).json(error);
             });
     },
 
@@ -38,23 +38,29 @@ module.exports = {
 
         Task.findByIdAndUpdate(request.params.id, request.body, { new: true })
             .then(task => {
-                return response.json(task);
+                response.json(task);
             })
             .catch(error => {
-                return response.status(500).json(error);
+                response.status(500).json(error);
             });
     },
 
     destroy(request, response) {
         Task.findByIdAndDelete(request.params.id)
             .then(() => {
-                return response.send();
+                response.send();
             })
             .catch(error => {
-                return response.status(500).json(error);
+                response.status(500).json(error);
             })
     },
-    async pendingTasks(request, response) {
-        response.send("teste")
+    pendingTasks(request, response) {
+        Task.find({ done: false })
+            .then(task => {
+                response.json(task);
+            })
+            .catch(error => {
+                response.send(400).json(error);
+            });
     }
 }
