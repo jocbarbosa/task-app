@@ -54,6 +54,7 @@ module.exports = {
                 response.status(500).json(error);
             })
     },
+    
     pendingTasks(request, response) {
         Task.find({ done: false })
             .then(task => {

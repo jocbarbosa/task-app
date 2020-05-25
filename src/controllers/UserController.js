@@ -3,52 +3,84 @@ const User = require('../models/User');
 
 module.exports = {
 
-    index(request, response) {
-        User.find()
-            .then(users => {
-                response.json(users);
-            })
-            .catch(error => {
-                response.status(500).json(error);
-            })
+    async index(request, response) {
+
+        try {
+            const user = await User.find();
+
+            if (!user) {
+                return response.status(404).send(user);
+            }
+
+            response.json(user);
+        } catch (error) {
+            response.status(500).json(error);
+        }
+
     },
 
-    show(request, response) {
-        User.findById(request.params.id)
-            .then(user => {
-                response.json(user);
-            })
-            .catch(error => {
-                response.status(500).json(error);
-            })
+    async show(request, response) {
+
+        try {
+            const user = await User.findById(request.params.id);
+            response.json(user);
+        } catch (error) {
+            response.status(500).json(error);
+        }
+
     },
 
-    update(request, response) {
-        User.findOneAndUpdate(request.params.id, request.body, { new: true })
-            .then((user) => {
-                response.json(user);
-            })
-            .catch(error => {
-                response.status(500).json(error);
-            })
-    },
+    async update(request, response) {
 
-    store(request, response) {
-        User.create(request.body)
-            .then(user => {
-                response.status(201).json(user);
-            })
-            .catch(error => {
-                response.status(500).json(error);
+        const updates = Object.keys(request.body);
+        const allowedUpdates = ['name', 'email', 'password'];
+        const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+        if (!isValidOperation) {
+            response.status(400).json({ message: 'There are fields not allowed to update' });
+        }
+
+        try {
+            const user = await User.findById(request.params.id);
+
+            updates.forEach((update) => {
+                user[update] = request.body[update];
             });
+
+            const userSave = await user.save();
+
+            response.json(userSave);
+
+        } catch (error) {
+            response.status(500).json(error);
+        }
+    },
+
+    async store(request, response) {
+        try {
+            const user = await User.create(request.body);
+
+            response.json(user);
+
+        } catch (error) {
+            response.status(500).json(error);
+        }
+
     },
     async destroy(request, response) {
-        User.findOneAndDelete({ _id: request.params.id })
-            .then(user => {
-                response.json(user);
-            })
-            .catch(error => {
-                response.status(500).json(error);
-            });
+
+
+        try {
+            const user = await User.findByIdAndDelete(request.params.id);
+
+            if (!user) {
+                response.status(404).json({ message: 'User not found' });
+            }
+
+            return response.send();
+        } catch (error) {
+            response.status(500).json(error);
+        }
+
     }
 }
