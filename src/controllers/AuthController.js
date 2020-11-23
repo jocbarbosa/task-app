@@ -1,19 +1,26 @@
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
 module.exports = {
     async login(request, response) {
         try {
-            const user = await User.findByCredentials(request.body.username, request.body.password, (err, user, msg) => {
-                if (err) {
-                    return response.status(500).send(err);
-                }
+            const { email, password } = request.body;
+            const user = await User.findOne({ email });
 
-                if (user) {
-                    response.send(user);
-                }
-            });
+            if (!user) {
+                throw new Error('Unable to login');
+            }
+
+            const isMatch = await bcrypt.compare(password, user.password);
+
+            if (!isMatch) {
+                throw new Error('Unable to login');
+            }
+
+            response.json(user);
+
         } catch (error) {
-            response.status(500).json(error);
+            response.status(400).json(error);
         }
     }
 }

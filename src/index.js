@@ -8,10 +8,14 @@ mongoose.connect(process.env.STRING_CONNECTION, {
     useUnifiedTopology: true
 });
 
-const routes = require('./routes');
+const routesTask = require('./routes/task');
+const routesAuth = require('./routes/auth');
+const routesUser = require('./routes/user');
 
 app.use(express.json());
-app.use(routes);
+app.use(routesTask);
+app.use(routesAuth);
+app.use(routesUser);
 
 
 app.listen(process.env.PORT);

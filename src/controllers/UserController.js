@@ -82,5 +82,9 @@ module.exports = {
             response.status(500).json(error);
         }
 
+    },
+
+    async login(request, response) {
+
     }
 }
