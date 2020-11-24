@@ -60,7 +60,9 @@ module.exports = {
         try {
             const user = await User.create(request.body);
 
-            response.json(user);
+            const token = await user.generateAuthToken();
+
+            response.status(201).json(user);
 
         } catch (error) {
             response.status(500).json(error);

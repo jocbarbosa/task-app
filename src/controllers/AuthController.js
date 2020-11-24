@@ -6,6 +6,7 @@ module.exports = {
         try {
             const { email, password } = request.body;
             const user = await User.findOne({ email });
+            const token = await user.generateAuthToken();
 
             if (!user) {
                 throw new Error('Unable to login');
