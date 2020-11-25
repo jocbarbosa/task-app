@@ -86,7 +86,7 @@ module.exports = {
 
     },
 
-    async login(request, response) {
-
+    async getProfile(request, response) {
+        response.send(request.user);
     }
 }
