@@ -9,6 +9,8 @@ const UserController = require('../controllers/UserController');
 routes.post('/users', UserController.store);
 routes.get('/users', authenticationMiddleware, UserController.index);
 routes.get('/users/me', authenticationMiddleware, UserController.getProfile);
+routes.post('/users/logout', authenticationMiddleware, UserController.logout);
+routes.post('/users/logoutAll', authenticationMiddleware, UserController.logoutAll)
 routes.get('/users/:id', UserController.show);
 routes.delete('/users/:id', UserController.destroy);
 routes.put('/users/:id', UserController.update);

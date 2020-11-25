@@ -87,6 +87,32 @@ module.exports = {
     },
 
     async getProfile(request, response) {
-        response.send(request.user);
+        response.json(request.user);
+    },
+
+    async logout(request, response) {
+        try {
+            request.user.tokens = request.user.tokens.filter((token) => {
+                return token.token !== request.token;
+            })
+
+            await request.user.save();
+
+            response.send();
+        } catch (e) {
+            response.status(500).send();
+        }
+    },
+
+    async logoutAll(request, response) {
+        try {
+            request.user.tokens = [];
+
+            await request.user.save();
+
+            response.send();
+        } catch (e) {
+            response.status(500).send();
+        }
     }
 }
