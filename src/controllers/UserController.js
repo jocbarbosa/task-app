@@ -39,11 +39,11 @@ module.exports = {
         const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
         if (!isValidOperation) {
-            response.status(400).json({ message: 'There are fields not allowed to update' });
+            return response.status(400).json({ message: 'There are fields not allowed to update' });
         }
 
         try {
-            const user = await User.findById(request.params.id);
+            user = request.user;
 
             updates.forEach((update) => {
                 user[update] = request.body[update];
@@ -72,14 +72,8 @@ module.exports = {
 
     },
     async destroy(request, response) {
-
-
         try {
-            const user = await User.findByIdAndDelete(request.params.id);
-
-            if (!user) {
-                response.status(404).json({ message: 'User not found' });
-            }
+            await request.user.remove();
 
             return response.send();
         } catch (error) {

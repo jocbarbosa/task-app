@@ -12,7 +12,7 @@ routes.get('/users/me', authenticationMiddleware, UserController.getProfile);
 routes.post('/users/logout', authenticationMiddleware, UserController.logout);
 routes.post('/users/logoutAll', authenticationMiddleware, UserController.logoutAll)
 routes.get('/users/:id', UserController.show);
-routes.delete('/users/:id', UserController.destroy);
-routes.put('/users/:id', UserController.update);
+routes.delete('/users/me', authenticationMiddleware, UserController.destroy);
+routes.put('/users/me', authenticationMiddleware, UserController.update);
 
 module.exports = routes;
