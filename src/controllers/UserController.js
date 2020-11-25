@@ -6,10 +6,11 @@ module.exports = {
     async index(request, response) {
 
         try {
-            const user = await User.find();
+            const user = await User.find()
+                .select({ "name": 1, "_id": 0, "age": 1, "email": 1 });
 
             if (!user) {
-                return response.status(404).send(user);
+                return response.status(404).send();
             }
 
             response.json(user);
@@ -22,7 +23,8 @@ module.exports = {
     async show(request, response) {
 
         try {
-            const user = await User.findById(request.params.id);
+            const user = await User.findById(request.params.id)
+                .select({ "name": 1, "_id": 0, "age": 1, "email": 1 });;
             response.json(user);
         } catch (error) {
             response.status(500).json(error);
