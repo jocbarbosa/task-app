@@ -12,13 +12,10 @@ const routesTask = require('./routes/task');
 const routesAuth = require('./routes/auth');
 const routesUser = require('./routes/user');
 
-app.use((req, res, next) => {
-    if (process.env.MAINTENANCE === 'true') {
-        return res.status(503).json({ message: 'The service are on maintenance. Try later.' });
-    } else {
-        next();
-    }
-});
+const maintenanceMiddleware = require('./middleware/maintenance');
+
+
+app.use(maintenanceMiddleware);
 
 app.use(express.json());
 app.use(routesTask);
