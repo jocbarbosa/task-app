@@ -23,15 +23,18 @@ module.exports = {
     },
 
     store(request, response) {
-        const { name, description, priority, done } = request.body;
 
-        Task.create({
-            name, description, priority, done
-        }).then((task) => {
-            response.status(201).json(task);
-        }).catch(error => {
-            response.status(500).json(error);
-        });
+        const task = new Task({
+            ...request.body,
+            owner: request.user._id
+        })
+
+        task.save()
+            .then((task) => {
+                response.status(201).json(task);
+            }).catch(error => {
+                response.status(500).json(error);
+            });
     },
 
     update(request, response) {
@@ -54,7 +57,7 @@ module.exports = {
                 response.status(500).json(error);
             })
     },
-    
+
     pendingTasks(request, response) {
         Task.find({ done: false })
             .then(task => {
