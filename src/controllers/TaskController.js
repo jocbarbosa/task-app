@@ -3,6 +3,7 @@ const Task = require('../models/Task');
 module.exports = {
     index(request, response) {
         Task.find(request.query)
+            .limit(10)
             .then((tasks) => {
                 response.json(tasks);
             }).catch((error) => {
