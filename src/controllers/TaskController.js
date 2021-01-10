@@ -2,11 +2,12 @@ const Task = require('../models/Task');
 
 module.exports = {
     index(request, response) {
-        Task.find().then((tasks) => {
-            response.json(tasks);
-        }).catch((error) => {
-            response.status(400).send();
-        })
+        Task.find(request.query)
+            .then((tasks) => {
+                response.json(tasks);
+            }).catch((error) => {
+                response.status(400).send();
+            })
     },
 
     show(request, response) {
