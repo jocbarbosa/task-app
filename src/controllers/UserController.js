@@ -86,6 +86,19 @@ module.exports = {
         response.json(request.user);
     },
 
+    async setProfilePic(request, response) {
+
+        const userId = request.user._id;
+
+        const userInstance = await User.findById(userId);
+
+        userInstance.picture = request.file.originalname;
+
+        await userInstance.save();
+
+        response.send();
+    },
+
     async logout(request, response) {
         try {
             request.user.tokens = request.user.tokens.filter((token) => {
