@@ -23,16 +23,20 @@ const upload = multer({
 
 
 // User Routes
+routes.use('/users', authenticationMiddleware);
+
 routes.post('/users', UserController.store);
-routes.get('/users', authenticationMiddleware, UserController.index);
-routes.get('/users/me', authenticationMiddleware, UserController.getProfile);
-routes.post('/users/me/avatar', authenticationMiddleware, upload.single('profilepic'), UserController.setProfilePic, (error, req, res, next) => {
+routes.get('/users', UserController.index);
+routes.get('/users/me', UserController.getProfile);
+routes.post('/users/me/avatar', upload.single('profilepic'), UserController.setProfilePic, (error, req, res, next) => {
     res.status(400).json({ error: error.message });
 });
-routes.post('/users/logout', authenticationMiddleware, UserController.logout);
-routes.post('/users/logoutAll', authenticationMiddleware, UserController.logoutAll)
+routes.post('/users/logout', UserController.logout);
+routes.post('/users/logoutAll', UserController.logoutAll)
 routes.get('/users/:id', UserController.show);
-routes.delete('/users/me', authenticationMiddleware, UserController.destroy);
-routes.put('/users/me', authenticationMiddleware, UserController.update);
+routes.delete('/users/me', UserController.destroy);
+routes.put('/users/me', UserController.update);
+
+routes.get('/users/:id/avatar', UserController.getAvatar);
 
 module.exports = routes;
